@@ -1,0 +1,38 @@
+body, html{
+    height: 100%;
+    margin:0
+}
+body{
+    background-image: linear-gradient(to bottom, blue, purple);
+    background-attachment: fixed;
+}
+a.no-underline{
+    text-decoration: none;
+}
+button{
+    font-weight: 600;
+    display: inline-block;
+    background-color: #44424a;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 15px 18px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: background-color 0.5s,transform 0.5s;
+}
+button:hover{
+    background-color: #000000;
+    transform: translate3d(0, 1px, 0);
+}
+.circle-image {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    display: block;
+    /*margin: 15px 15px 15px 30px;*/
+    object-fit: cover; /* 确保图片填充整个框，同时保持其宽高比 */
+}

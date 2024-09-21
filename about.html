@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .about-words{
+            color: aliceblue;
+            font-weight: 1000;
+            line-height: 1.2; /* Adjusted line height */
+        }
+        div.showbox{
+            border-radius: 12px;
+            font-weight: 800;
+            background-color: #44424a;
+            color: #ffffff;
+            padding: 15px 32px;
+            margin: 20px 40px 20px 40px; 
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="no-underline">
+        <button>Home</button>
+    </a><br>
+    <div style="display: flex;">
+        <div>
+            <img src="头像.jpg" alt="" class="circle-image" 
+            style="margin: 40px 20px 1px 100px; border: 3px solid aliceblue;">
+            <h1 style="margin: 20px 20px 1px 115px;color: aliceblue;" >关于我</h1>
+            <hr color="aliceblue" size="5" width="125px" style="margin: 1px 112px;">
+        </div>
+        <div style="margin: 55px 20px 0 20px; position: relative;">
+            <!-- 添加一个单独的div来表示竖线 -->
+            <div style="position: absolute; left: -20px; top: 0; height: 60%; border-left: 2px solid aliceblue;"></div>
+            <p class="about-words" style="margin: 50px 0px 0px 0px;"></p>
+        </div>
+        <div>
+            <p class="about-words"  style="margin: 55px 0px 0px 0px;">网名:Ise217/Kuriyama9590</p>
+            <p class="about-words">技能:Web前后端，云计算，python，基础算法</p>
+            <p class="about-words">联系：2381751651@qq.com</p>
+        </div>
+    </div>
+    <div>
+        <div>
+            <h1 style="margin: 80px 20px 1px 95px;color: aliceblue;" >项目经历</h1>
+            <hr color="aliceblue" size="5" width="170px" style="margin: 1px 90px;">
+            <br>
+        </div>
+        <div style="display: flex;">
+            <div class="showbox">
+                <h2>基于Django的个人博客</h2>
+                <p>使用Django框架搭建的个人博客，实现了用户注册登录，文章发布，评论等功能</p>
+            </div>
+            <div class="showbox">
+                <h2>基于Vue的在线商城</h2>
+                <p>使用Vue框架搭建的在线商城，实现了用户注册登录，商品展示，购物车等功能</p>
+            </div>
+            <div class="showbox">
+                <h2>基于Flask的图书管理系统</h2>
+                <p>使用Flask框架搭建的图书管理系统，实现了图书的增删改查等功能</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
