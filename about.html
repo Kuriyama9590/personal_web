@@ -10,14 +10,17 @@
             color: aliceblue;
             font-weight: 1000;
             line-height: 1.2; /* Adjusted line height */
+            max-width: 200px;
         }
-        div.showbox{
+        .showbox {
             border-radius: 12px;
             font-weight: 800;
             background-color: #44424a;
             color: #ffffff;
-            padding: 15px 32px;
-            margin: 20px 40px 20px 40px; 
+            padding: 15px 32px ;
+            margin: 20px; /* 修改margin为统一值 */
+            flex: 1; /* 添加flex属性，使得每个box平均分配空间 */
+            min-width: 0; /* 确保在flex布局中内容不会溢出 */
         }
     </style>
 </head>
@@ -51,12 +54,15 @@
         </div>
         <div style="display: flex;">
             <div class="showbox">
-                <h2>基于Django的个人博客</h2>
-                <p>使用Django框架搭建的个人博客，实现了用户注册登录，文章发布，评论等功能</p>
+                <h2>腾讯云CVM测试开发</h2>
+                <img src="腾讯云.jpg" alt="" style="width: 150px; height: 150px;">
+                <p>基于python3 pandas库编写的数据筛选，聚类，展示脚本，支持自动生成复测脚本，自动ai提单问答，一键生成AI问题单</p>
             </div>
+            
             <div class="showbox">
-                <h2>基于Vue的在线商城</h2>
-                <p>使用Vue框架搭建的在线商城，实现了用户注册登录，商品展示，购物车等功能</p>
+                <h2>基于flask的在线问答语音助手</h2>
+                <img src="zhipu.png" alt="" style="width: 150px; height: 150px;">
+                <p>flask框架结合智谱api+TTS搭建的web语音聊天助手，通过提示词定义角色</p>
             </div>
             <div class="showbox">
                 <h2>基于Flask的图书管理系统</h2>
