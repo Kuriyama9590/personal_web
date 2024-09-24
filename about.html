@@ -6,11 +6,23 @@
     <title>About</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        .about-words{
+        .words{
             color: aliceblue;
             font-weight: 1000;
-            line-height: 1.2; /* Adjusted line height */
-            max-width: 200px;
+            line-height: 1.0; /* Adjusted line height */
+            display: block;
+        }
+        .words-link{
+            color: aliceblue;
+            font-weight: 1000;
+            line-height: 1.0; /* Adjusted line height */
+            display: block;
+            text-decoration: none;
+            transition: transform 0.3s, color 2s;
+        }
+        .words-link:hover{
+            color: rgb(86, 218, 218);
+            transform: translateY(2px); 
         }
         .showbox {
             border-radius: 12px;
@@ -18,9 +30,9 @@
             background-color: #44424a;
             color: #ffffff;
             padding: 15px 32px ;
-            margin: 20px; /* 修改margin为统一值 */
-            flex: 1; /* 添加flex属性，使得每个box平均分配空间 */
-            min-width: 0; /* 确保在flex布局中内容不会溢出 */
+            margin: 20px; 
+            flex: 1; 
+            min-width: 200px; 
         }
     </style>
 </head>
@@ -30,25 +42,25 @@
     </a><br>
     <div style="display: flex;">
         <div>
-            <img src="头像.jpg" alt="" class="circle-image" 
-            style="margin: 40px 20px 1px 100px; border: 3px solid aliceblue;">
-            <h1 style="margin: 20px 20px 1px 115px;color: aliceblue;" >关于我</h1>
-            <hr color="aliceblue" size="5" width="125px" style="margin: 1px 112px;">
+            <img src="头像.jpg" alt="" class="circle-image" style="margin: 40px 20px 1px 100px; border: 3px solid aliceblue;">
+            <h1 style="margin: 20px 20px 1px 125px;color: aliceblue;" >关于我</h1>
+            <hr color="aliceblue" size="5" width="115px" style="margin: 1px 118px;">
         </div>
-        <div style="margin: 55px 20px 0 20px; position: relative;">
+        <div style="margin: 55px 20px 0 0px; position: relative;">
             <!-- 添加一个单独的div来表示竖线 -->
             <div style="position: absolute; left: -20px; top: 0; height: 60%; border-left: 2px solid aliceblue;"></div>
             <p class="about-words" style="margin: 50px 0px 0px 0px;"></p>
         </div>
         <div>
-            <p class="about-words"  style="margin: 55px 0px 0px 0px;">网名:Ise217/Kuriyama9590</p>
-            <p class="about-words">技能:Web前后端，云计算，python，基础算法</p>
-            <p class="about-words">联系：2381751651@qq.com</p>
+            <p class="words"  style="margin: 55px 0px 0px 0px;">网名:Ise217/Kuriyama9590</p>
+            <p class="words">技能:Web前后端，云计算，python，基础算法</p>
+            <p class="words">Email：2381751651@qq.com</p>
+            <a href="https://github.com/Kuriyama9590" class="words-link" target="_blank">GitHub：https://github.com/Kuriyama9590</a>
         </div>
     </div>
     <div>
         <div>
-            <h1 style="margin: 80px 20px 1px 95px;color: aliceblue;" >项目经历</h1>
+            <h1 style="margin: 80px 20px 1px 107px;color: aliceblue;" >项目经历</h1>
             <hr color="aliceblue" size="5" width="170px" style="margin: 1px 90px;">
             <br>
         </div>
@@ -62,10 +74,11 @@
             <div class="showbox">
                 <h2>基于flask的在线问答语音助手</h2>
                 <img src="zhipu.png" alt="" style="width: 150px; height: 150px;">
-                <p>flask框架结合智谱api+TTS搭建的web语音聊天助手，通过提示词定义角色</p>
+                <p>flask框架+智谱api+TTS搭建的web语音聊天助手，通过提示词定义角色</p>
             </div>
             <div class="showbox">
-                <h2>基于Flask的图书管理系统</h2>
+                <h2>Minecraft Paper服务端性能测试脚本</h2>
+                <img src="paper.png" alt="" style="width: 150px; height: 150px;">
                 <p>使用Flask框架搭建的图书管理系统，实现了图书的增删改查等功能</p>
             </div>
         </div>
