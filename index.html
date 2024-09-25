@@ -3,9 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .title-container {
+            display: flex;
+            flex-direction: column; /* 垂直排列子元素 */
+            align-items: center; /* 水平居中 */
+            justify-content: center; /* 垂直居中 */
+            height: 100%; /* 容器高度为视窗高度 */
+            text-align: center; /* 文字居中 */
+        }
+        
+        .cheer-animation {
+            animation: cheer 1s ease-out;
+        }
+        
+        .cheer {
+            font-size: 70px;
+            position: absolute;
+            opacity: 0;
+        }
+
+        .button-mid{
+        font-weight: 600;
+        display: inline-block;
+        background-color: #44424a;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        font-size: 16px;
+        margin: 15px 18px;
+        cursor: pointer;
+        border-radius: 12px;
+        transition: background-color 0.5s,transform 0.5s;
+        }
+
+        .button-mid:hover{
+            background-color: #000000;
+            transform: translate3d(0, 1px, 0);
+        }
+    </style>
+    <title>index</title>
 </head>
 <body>
+    <div class="title-container">
+        <h1 class="words" style="font-size: 60px; animation: slideIn 1s ease-out;">🥳欢迎来到Ise217的Web!🥳</h1>
+        <div class="button-container">
+            <a href="about.html" class="button-mid" style="text-decoration: none;">👉🏻关于我👈🏻</a>
+            <a href="register.html" class="button-mid" style="text-decoration: none;">🥰注册😍</a>
+        </div>
+    </div>
+
+    <div id="cheerContainer"></div>
     
+    <script>
+        function createCheer() {
+            const cheers = ['🎉', '👏', '🎊', '🥳', '🙌'];
+            const cheerContainer = document.getElementById('cheerContainer');
+            
+            for (let i = 0; i < 20; i++) {
+                const cheer = document.createElement('div');
+                cheer.className = 'cheer';
+                cheer.textContent = cheers[Math.floor(Math.random() * cheers.length)];
+                cheer.style.left = Math.random() * 100 + 'vw';
+                cheer.style.top = Math.random() * 100 + 'vh';
+                cheerContainer.appendChild(cheer);
+                
+                setTimeout(() => {
+                    cheer.classList.add('cheer-animation');
+                }, i * 100);
+            }
+        }
+
+        window.onload = createCheer;
+    </script>
 </body>
 </html>

@@ -9,7 +9,7 @@ body{
 a.no-underline{
     text-decoration: none;
 }
-button{
+.button-top{/*按钮样式*/
     font-weight: 600;
     display: inline-block;
     background-color: #44424a;
@@ -23,7 +23,7 @@ button{
     border-radius: 12px;
     transition: background-color 0.5s,transform 0.5s;
 }
-button:hover{
+.button-top:hover{
     background-color: #000000;
     transform: translate3d(0, 1px, 0);
 }
@@ -35,4 +35,44 @@ button:hover{
     display: block;
     /*margin: 15px 15px 15px 30px;*/
     object-fit: cover; /* 确保图片填充整个框，同时保持其宽高比 */
+}
+.words{
+    color: aliceblue;
+    font-weight: 1000;
+    line-height: 1.0; /* Adjusted line height */
+    display: block;
+}
+.words-link{
+    color: aliceblue;
+    font-weight: 1000;
+    line-height: 1.0; /* Adjusted line height */
+    display: block;
+    text-decoration: none;
+    transition: transform 0.3s, color 2s;
+}
+.words-link:hover{
+    color: rgb(86, 218, 218);
+    transform: translateY(2px); 
+}
+.showbox {
+    border-radius: 12px;
+    font-weight: 800;
+    background-color: #44424a;
+    color: #ffffff;
+    padding: 15px 32px ;
+    margin: 20px; 
+    flex: 1; 
+    min-width: 200px; 
+}
+
+@keyframes cheer {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes slideIn {
+    0% { transform: translateX(-100%); opacity: 0;}
+    50% { transform: translateX(-50%); opacity: 0.5; font-size: 30px; }
+    100% { transform: translateX(0); opacity: 1; font-size: 60px; }
 }
