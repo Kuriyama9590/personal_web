@@ -30,6 +30,27 @@ a.no-underline{
     transform: translate3d(0, 1px, 0);
     
 }
+.button-mid{
+    font-weight: 600;
+    display: inline-block;
+    background-color: #44424a;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 16px;
+    margin: 15px 18px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: background-color 0.5s,transform 0.5s;
+    animation: popout-detailed-button 1s ease-out;
+}
+
+.button-mid:hover{
+    background-color: #000000;
+    transform: translate3d(0, 1px, 0);
+}
+
 .circle-image {
     border-radius: 50%;
     width: 150px;
@@ -42,7 +63,6 @@ a.no-underline{
 .words{
     color: aliceblue;
     font-weight: 1000;
-    line-height: 1.0; /* Adjusted line height */
 }
 .words-link{
     color: aliceblue;
@@ -92,25 +112,7 @@ a.no-underline{
     opacity: 0;
 }
 
-.button-mid{
-    font-weight: 600;
-    display: inline-block;
-    background-color: #44424a;
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    font-size: 16px;
-    margin: 15px 18px;
-    cursor: pointer;
-    border-radius: 12px;
-    transition: background-color 0.5s,transform 0.5s;
-}
 
-.button-mid:hover{
-    background-color: #000000;
-    transform: translate3d(0, 1px, 0);
-}
 
 @keyframes cheer {
     0% { transform: scale(0); opacity: 0; }
@@ -133,4 +135,60 @@ a.no-underline{
     0% { transform: scale(0); opacity: 0; }
     50% { transform: scale(1.2); opacity: 1; }
     100% { transform: scale(1); opacity: 1; }
+}
+
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 5px;
+}
+
+input {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px;
+    background-color: #5cb85c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+p {
+    text-align: center;
+}
+
+a {
+    color: #5cb85c;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
