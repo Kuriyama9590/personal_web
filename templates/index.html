@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='js/script.js') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <style>
+        
+    </style>
+    <script>
+        var login_status = document.getElementById('login_status');
+        var uname = document.getElementById('uname');
+        if(login_status){
+            Welcome_alert(uname);
+        }
+    </script>
+    <title>index{{user.username}}</title>
+</head>
+<body>
+
+    <div class="title-container">
+        <h1 class="words" style="font-size: 60px; animation: popout-main-button 0.5s ease-out;">🥳欢迎来到Ise217的Web!🥳</h1>
+        <div class="button-container">
+            <a href="{{url_for('about')}}" class="button-mid" style="text-decoration: none; animation: popout-main-button 0.7s ease-out;">👉🏻关于我👈🏻</a>
+            <a href="{{url_for('login')}}" class="button-mid" style="text-decoration: none; animation: popout-main-button  0.8s ease-out;">😁登录🤤</a>
+            <a href="http://1.13.196.226:18080/login" class="button-mid" target="_parent" style="text-decoration: none; animation: popout-main-button  0.8s ease-out;" >🤓网盘🤓</a>
+        </div>
+    </div>
+
+    <div id="cheerContainer"></div>
+    
+    <script>
+        window.onload = createCheer; 
+    </script>
+</body>
+</html>
