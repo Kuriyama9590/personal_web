@@ -9,13 +9,14 @@
 </head>
 </head>
 <body>
-    <a href="index.html" class="no-underline" style="margin-top: 50px;">
+    <a href="{{ url_for('index')}}" class="no-underline" style="margin-top: 50px;">
         <button class="button-top">😋Home😋</button>
     </a><br>
-    <div style="display: flex;">
+    <div style="display: flex;" class = "about_me">
         <div>
-            <img src="头像.jpg" alt="" class="circle-image" style="margin: 40px 20px 1px 100px; border: 3px solid aliceblue; animation: slideIn 1s ease-out;">
+            <img src="{{ url_for('static', filename='images/头像.jpg') }}" alt="" class="circle-image" style="margin: 40px 20px 1px 100px; border: 3px solid aliceblue; animation: slideIn 1s ease-out;">
             <h1 style="margin: 20px 20px 1px 113px;color: aliceblue;animation: slideIn 1s ease-out;" >关于我</h1>
+            <h1 style="margin: 0 20px 1px 130px; color: aliceblue; animation: slideIn 1s ease-out; font-size: 20px; display: block;">AboutMe</h1>
         </div>
         <div style="margin: 55px 20px 0 0px; position: relative;">
             <!-- 添加一个单独的div来表示竖线 -->
@@ -37,27 +38,63 @@
             </a>
         </div>
     </div>
-    <div>
+    <div class="experience">
         <div>
             <h1 style="margin: 80px 20px 0px 100px;color: aliceblue; animation: slideIn 1s ease-out;" >项目经历</h1>
+            <h1 style="margin: 0px 20px 0px 87px; color: aliceblue; animation: slideIn 1s ease-out; font-size: 20px; display: block;">ProjectExperiences</h1>
             <br>
         </div>
         <div style="display: flex;">
             <div class="showbox" >
                 <h2>腾讯云CVM测试开发</h2>
-                <img src="腾讯云.png" alt="" style="width: 150px; height: 150px;">
+                <img src="{{ url_for('static', filename='images/腾讯云.png') }}" alt="" style="width: 150px; height: 150px;">
                 <p>基于python3 pandas库编写的数据筛选，聚类，展示脚本，支持自动生成复测脚本，自动ai提单问答，一键生成AI问题单</p>
             </div>
             
             <div class="showbox">
                 <h2>基于flask的在线问答语音助手</h2>
-                <img src="zhipu.png" alt="" style="width: 150px; height: 150px;">
+                <img src="{{ url_for('static', filename='images/zhipu.png') }}" alt="" style="width: 150px; height: 150px;">
                 <p>flask框架+智谱api+TTS搭建的web语音聊天助手，通过提示词定义角色</p>
             </div>
             <div class="showbox">
                 <h2>Minecraft Paper服务端性能测试脚本</h2>
-                <img src="paper.png" alt="" style="width: 150px; height: 150px;">
+                <img src="{{ url_for('static', filename='images/paper.png')}}" alt="" style="width: 150px; height: 150px;">
                 <p>使用Flask框架搭建的图书管理系统，实现了图书的增删改查等功能</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="privacy" style="text-align: left; padding-left: 100px;">
+        <div>
+            <h1 style="margin: 80px 20px 0px 0px; color: aliceblue; animation: slideIn 1s ease-out;">隐私政策</h1>
+            <h1 style="margin: 0 20px 0px 18px; color: aliceblue; animation: slideIn 1s ease-out; font-size: 20px; display: block;">PrivacyPolicy</h1>
+        </div>
+        <div style="display: flex;">
+            <div class="showbox">
+                <h2>信息更正</h2>
+                <p>用户有权更正或删除其提供的个人信息。请通过我们的联系方式提出请求。</p>
+            </div>
+            <div class="showbox">
+                <h2>隐私政策更新</h2>
+                <p>我们保留更新隐私政策的权利，并将在更新时通知用户。</p>
+            </div>
+            <div class="showbox">
+                <h2>数据安全</h2>
+                <p>我们采取适当的安全措施来保护用户的个人信息，确保数据安全。</p>
+            </div>
+        </div>
+        <div style="display: flex;">
+            <div class="showbox">
+                <h2>数据共享</h2>
+                <p>我们不会将用户的个人信息共享给第三方，除非得到用户的明确同意。</p>
+            </div>
+            <div class="showbox">
+                <h2>联系我们</h2>
+                <p>如果您有任何关于隐私政策的疑问或需要更正个人信息，请通过我们的联系方式与我们联系。</p>
+            </div>
+            <div class="showbox">
+                <h2>法律声明</h2>
+                <p>本隐私政策适用于我们网站和应用程序上的所有活动。如果您不同意本隐私政策，请停止使用我们的服务。</p>
             </div>
         </div>
     </div>
