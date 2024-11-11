@@ -7,43 +7,12 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        .nav-container {
-            position: fixed;
-            right: 0;
-            top: 0;
-            padding: 10px;
-        }
-        .sidebar {
-            background-color: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            display: none; /* 默认隐藏 */
-            transition: display 0.3s ease; /* 添加过渡效果 */
-        }
-        .nav-button {
-            background-color: #000000; /* 按钮背景色 */
-            color: white; /* 按钮文字颜色 */
-            border: none; /* 去掉边框 */
-            padding: 10px 15px; /* 内边距 */
-            text-align: center; /* 文字居中 */
-            text-decoration: none; /* 去掉下划线 */
-            display: inline-block; /* 使其成为块级元素 */
-            font-size: 16px; /* 字体大小 */
-            margin: 4px 2px; /* 外边距 */
-            cursor: pointer; /* 鼠标悬停时显示手型 */
-            border-radius: 5px; /* 圆角 */
-            outline: none; /* 去掉轮廓 */
-            transition: background-color 0.3s; /* 添加过渡效果 */
-        }
-        .nav-button:hover {
-            background-color: #000000; /* 悬停时的背景色 */
-        }
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const navButton = document.querySelector('.nav-button');
+            const navButton = document.querySelector('.button-top');
             const sidebar = document.querySelector('.sidebar');
+            const navContainer = document.querySelector('.nav-container');
 
             navButton.addEventListener('mouseenter', function() {
                 sidebar.style.display = 'block'; // 鼠标进入按钮时显示导航栏
@@ -53,23 +22,20 @@
                 sidebar.style.display = 'block'; // 鼠标进入导航栏时保持显示
             });
 
-            navButton.addEventListener('mouseleave', function() {
-                if (!sidebar.matches(':hover')) {
-                    sidebar.style.display = 'none'; // 鼠标离开按钮且不在导航栏上时隐藏
-                }
-            });
-
             sidebar.addEventListener('mouseleave', function() {
                 sidebar.style.display = 'none'; // 鼠标离开导航栏时隐藏
+            });
+
+            navContainer.addEventListener('mouseleave', function() {
+                sidebar.style.display = 'none'; // 鼠标离开box时隐藏
             });
         });
     </script>
 </head>
 <body>
-    <div class="nav-container"> <!-- 添加包裹元素 -->
-        <button class="nav-button">导航</button>
+    <div class="nav-container"> 
+        <button class="button-top">🚌导航🚗</button>
         <div class="sidebar">
-            <h3>导航</h3>
             <ul>
                 <li><a href="#about_me" style="color: white; text-decoration: none;">关于我</a></li>
                 <li><a href="#experience" style="color: white; text-decoration: none;">项目经历</a></li>

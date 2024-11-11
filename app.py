@@ -28,6 +28,10 @@ def index():
 def about():
     return render_template('about.html')
 
+@app.route('/video_zone')
+def video_zone():
+    return render_template('video_zone.html')
+
 @app.route('/login', methods=['GET','POST'])
 def login():
     if request.method == 'POST':
