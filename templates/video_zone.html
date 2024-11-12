@@ -4,8 +4,51 @@
     <meta charset="UTF-8">
     <title>VideoZone</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='js/script.js')}}">
 </head>
+<style>
+    .animepics{
+        width: 240px; 
+        height: 360px; 
+        padding: 0;
+    }
+
+    .showbox-anime {
+    border-radius: 12px;
+    font-weight: 800;
+    background-color: #44424a;
+    color: #ffffff;
+    padding: 15px 32px ;
+    margin: 20px; 
+    flex: 1; 
+    min-width: 200px; 
+    transition: transform 0.5s, background-color 0.3s;
+    animation: popout-detailed-button 1s ease-out;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    margin-right: 10px;
+     flex: 1; 
+     min-width: 200px;
+    }
+
+    .showbox-anime:hover{
+        transform: translateY(-2px);
+        background-color: rgb(3, 3, 3);
+    }
+</style>
 <body>
+    <div class="nav-container"> 
+        <button class="button-top">🚌导航🚗</button>
+        <div class="sidebar">
+            <ul>
+                <li><a href="#new_videos" style="color: white; text-decoration: none;">新进好番</a></li>
+                <li><a href="#band_classic" style="color: white; text-decoration: none;">乐队经典</a></li>
+                <li><a href="#anime_before" style="color: white; text-decoration: none;">往年好番</a></li>
+            </ul>
+        </div>
+    </div>
     <a href="{{ url_for('index')}}" class="no-underline" style="margin-top: 50px;">
         <button class="button-top">😋Home😋</button>
     </a><br>
@@ -13,29 +56,92 @@
         <h1 style="margin: 80px 20px 0px 100px;color: aliceblue; animation: slideIn 1s ease-out;">新进好番</h1>
         <h1 style="margin: 0px 20px 0px 115px; color: aliceblue; animation: slideIn 1s ease-out; font-size: 20px; display: block;">New_Animes</h1>
         <br>
-        <div style="display: flex;">
-            <a href="https://www.bilibili.com/bangumi/play/ss1172?spm_id_from=333.337.0.0">
-                <div class="showbox" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-right: 10px;">
-                    <img src="static/images/kon.jpg" alt="加载错误" style="width: 240px; height: 320px; padding: 0;">
-                    <p class="showbox-text" style="color: aliceblue; animation: slideIn 1s ease-out; font-size: 18px;">K-ON!</p>
-                </div>
-            </a>
-            <a href="https://www.bilibili.com/bangumi/play/ss43164?spm_id_from=333.337.0.0">
-                <div class="showbox" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-right: 10px;">
-                    <img src="static/images/bocchi.jpg" alt="加载错误" style="width: 240px; height: 320px; padding: 0;">
-                    <p class="showbox-text" style="color: aliceblue; animation: slideIn 1s ease-out; font-size: 18px;">Bocchi The Rock</p>
-                </div>
-            </a>
+        <div style="display: flex; flex-wrap: wrap;">
             <a href="https://space.bilibili.com/161139319/channel/seriesdetail?sid=4466594&ctype=0">
-                <div class="showbox" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-right: 10px;">
-                    <img src="static/images/mygo.jpg" alt="加载错误" style="width: 240px; height: 320px; padding: 0;">
-                    <p class="showbox-text" style="color: aliceblue; animation: slideIn 1s ease-out; font-size: 18px;">BangDream It`s MyGo!!!!!</p>
+                <div class="showbox-anime">
+                    <img src="static/images/mygo.jpg" alt="加载错误" class="animepics">
+                    <p class="showbox-text" style="color: aliceblue; font-size: 18px;">BangDream It`s MyGo!!!!!</p>
                 </div>
             </a>
             <a href="https://space.bilibili.com/161139319/channel/seriesdetail?sid=4451205&ctype=0">
-                <div class="showbox" style="display: flex; flex-direction: column; justify-content: center; align-items: center; margin-right: 10px;">
-                    <img src="static/images/gbc.jpg" alt="加载错误" style="width: 240px; height: 320px; padding: 0;">
-                    <p class="showbox-text" style="color: aliceblue; animation: slideIn 1s ease-out; font-size: 18px;">Girls Band Cry</p>
+                <div class="showbox-anime">
+                    <img src="static/images/gbc.jpg" alt="加载错误" class="animepics">
+                    <p class="showbox-text" style="color: aliceblue; font-size: 18px;">Girls Band Cry</p>
+                </div>
+            </a>
+            <a href="http://1.13.196.226:18080/s/9QYO977Nlqgbh4B">
+                <div class="showbox-anime">
+                    <img src="static/images/makeheroine.jpg" alt="加载错误" class="animepics">
+                    <p class="showbox-text" style="color: aliceblue; font-size: 18px;">負けヒロインが多すぎる!</p>
+                </div>
+            </a>
+            <a href="http://1.13.196.226:18080/s/RkUNkK5Xp2PAlLL">
+                <div class="showbox-anime">
+                    <img src="static/images/furiren.jpg" alt="加载错误" class="animepics">
+                    <p class="showbox-text" style="color: aliceblue; font-size: 18px;">葬送のフリーレン</p>
+                </div>
+            </a>
+            <a href="http://1.13.196.226:18080/s/plFmWmhhAKp9Csw">
+                <div class="showbox-anime">
+                    <img src="static/images/onimai.jpg" alt="加载错误" class="animepics">
+                    <p class="showbox-text" style="color: aliceblue; font-size: 18px;">别当欧尼酱了！</p>
+                </div>
+            </a>
+            <a href="http://1.13.196.226:18080/s/8tY4eu4YP6FdPph">
+                <div class="showbox-anime">
+                    <img src="static/images/shikanoko.jpg" alt="加载错误" class="animepics">
+                    <p class="showbox-text" style="color: aliceblue; font-size: 18px;">鹿乃子乃子虎视眈眈</p>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div id="band_classic">
+        <h1 style="margin: 80px 20px 0px 65px;color: aliceblue; animation: slideIn 1s ease-out;">少女乐队经典</h1>
+        <h1 style="margin: 0px 20px 0px 95px; color: aliceblue; animation: slideIn 1s ease-out; font-size: 20px; display: block;">ShojoBandClassic</h1>
+        <br>
+        <div style="display: flex; flex-wrap: wrap;">
+            <a href="https://www.bilibili.com/bangumi/play/ss1172?spm_id_from=333.337.0.0">
+                <div class="showbox-anime">
+                    <img src="static/images/kon.jpg" alt="加载错误" class="animepics">
+                    <p class="showbox-text" style="color: aliceblue; font-size: 18px;">K-ON!</p>
+                </div>
+            </a>
+            <a href="https://www.bilibili.com/bangumi/play/ss43164?spm_id_from=333.337.0.0">
+                <div class="showbox-anime">
+                    <img src="static/images/bocchi.jpg" alt="加载错误" class="animepics">
+                    <p class="showbox-text" style="color: aliceblue; font-size: 18px;">Bocchi The Rock</p>
+                </div>
+            </a>
+            <a href="https://space.bilibili.com/161139319/channel/seriesdetail?sid=4466594&ctype=0">
+                <div class="showbox-anime">
+                    <img src="static/images/mygo.jpg" alt="加载错误" class="animepics">
+                    <p class="showbox-text" style="color: aliceblue; font-size: 18px;">BangDream It`s MyGo!!!!!</p>
+                </div>
+            </a>
+            <a href="https://space.bilibili.com/161139319/channel/seriesdetail?sid=4451205&ctype=0">
+                <div class="showbox-anime">
+                    <img src="static/images/gbc.jpg" alt="加载错误" class="animepics">
+                    <p class="showbox-text" style="color: aliceblue; font-size: 18px;">Girls Band Cry</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div id="anime_before">
+        <h1 style="margin: 80px 20px 0px 100px;color: aliceblue; animation: slideIn 1s ease-out;">往年好番</h1>
+        <h1 style="margin: 0px 20px 0px 106px; color: aliceblue; animation: slideIn 1s ease-out; font-size: 20px; display: block;">Animes_Before</h1>
+        <br>
+        <div style="display: flex; flex-wrap: wrap;">
+            <a href="http://1.13.196.226:18080/s/EA6VBVo60j9stei">
+                <div class="showbox-anime">
+                    <img src="static/images/callofthenight.jpg" alt="加载错误" class="animepics">
+                    <p class="showbox-text" style="color: aliceblue; font-size: 18px;">彻夜之歌</p>
+                </div>
+            </a>
+            <a href="http://1.13.196.226:18080/s/vdVAaL6tTjurnrw">
+                <div class="showbox-anime">
+                    <img src="static/images/akebi.jpg" alt="加载错误" class="animepics">
+                    <p class="showbox-text" style="color: aliceblue; font-size: 18px;">明日ちゃんのセーラー服</p>
                 </div>
             </a>
         </div>

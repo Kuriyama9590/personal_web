@@ -5,32 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='js/script.js')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-    </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const navButton = document.querySelector('.button-top');
-            const sidebar = document.querySelector('.sidebar');
-            const navContainer = document.querySelector('.nav-container');
-
-            navButton.addEventListener('mouseenter', function() {
-                sidebar.style.display = 'block'; // 鼠标进入按钮时显示导航栏
-            });
-
-            sidebar.addEventListener('mouseenter', function() {
-                sidebar.style.display = 'block'; // 鼠标进入导航栏时保持显示
-            });
-
-            sidebar.addEventListener('mouseleave', function() {
-                sidebar.style.display = 'none'; // 鼠标离开导航栏时隐藏
-            });
-
-            navContainer.addEventListener('mouseleave', function() {
-                sidebar.style.display = 'none'; // 鼠标离开box时隐藏
-            });
-        });
-    </script>
 </head>
 <body>
     <div class="nav-container"> 
@@ -96,10 +72,11 @@
         </div>
     </div>
 
-    <div class="privacy" id="privacy" style="text-align: left; padding-left: 100px;"> <!-- 添加id -->
-        <div>
+    <div class="privacy" id="privacy"> 
+        <div style="text-align: left; padding-left: 100px;">
             <h1 style="margin: 80px 20px 0px 0px; color: aliceblue; animation: slideIn 1s ease-out;">隐私政策</h1>
             <h1 style="margin: 0 20px 0px 18px; color: aliceblue; animation: slideIn 1s ease-out; font-size: 20px; display: block;">PrivacyPolicy</h1>
+            <br>
         </div>
         <div style="display: flex;">
             <div class="showbox">

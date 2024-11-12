@@ -113,18 +113,26 @@ a.no-underline{
 }
 
 .nav-container {/*导航栏*/
-    position: fixed;
-    right: 0;
-    top: 0;
+    position: fixed; /* 修改为固定定位 */
+    right: 0; /* 右侧对齐 */
+    top: 0; /* 顶部对齐 */
     padding: 10px;
 }
+
+.nav-container:hover .sidebar {
+    display: block; /* 鼠标悬浮时显示 */
+}
 .sidebar {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: 150px; /* 设置与按钮相同的宽度 */
+    transform: translateY(0);
     background-color: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 10px;
     border-radius: 5px;
     display: none; /* 默认隐藏 */
-    transition: display 0.3s ease; /* 添加过渡效果 */
 }
 
 @keyframes cheer {
@@ -206,17 +214,4 @@ a:hover {
     text-decoration: underline;
 }
 
-.sidebar {/*悬浮导航栏*/
-    position: fixed;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 10px;
-    border-radius: 5px;
-    display: none; /* 默认隐藏 */
-}
-.nav-container:hover .sidebar {
-    display: block; /* 鼠标悬浮时显示 */
-}
+
