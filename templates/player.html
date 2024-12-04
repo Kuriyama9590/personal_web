@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>播放器</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <a href="{{ url_for('video_zone')}}" class="no-underline" style="margin-top: 50px;">
+        <button class="button-top">🎈番剧页🎶</button>
+    </a><br>
+    
+    <div class="showbox">
+        <p class="showbox-text" style="color: aliceblue; font-size: 18px;">{{ video_page }}</p>
+        <div style="text-align: center;">
+            <video width="80%" controls autoplay>
+                <source src="/stream/{{ video_name }}/{{ video_page }}" type="video/mp4">
+                您的浏览器不支持 HTML5 视频播放。
+            </video>
+        </div>
+        <div class="showbox">
+            <p class="showbox-text" style="color: aliceblue; font-size: 18px;">剧集列表</p>
+            <div id="episodeList" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;">
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取当前视频信息
+        const currentVideoName = "{{ video_name }}";
+        const currentPage = "{{ video_page }}";
+        const totalPages = parseInt("{{ pages_number }}");
+        
+        function generateEpisodeList() {
+            const episodeList = document.getElementById('episodeList');
+            if (!episodeList) return;
+            
+            // 清空现有内容
+            episodeList.innerHTML = '';
+            
+            // 检查总集数是否有效
+            if (!totalPages || totalPages <= 0) {
+                console.error('无效的总集数');
+                return;
+            }
+            
+            for (let i = 1; i <= totalPages; i++) {
+                const episodeLink = document.createElement('a');
+                // 使用完整的URL，包含pages_number参数
+                episodeLink.href = `/player/${currentVideoName}/p${i}.mp4?pages_number=${totalPages}`;
+                
+                const episodeButton = document.createElement('button');
+                episodeButton.className = 'button-mid';
+                
+                // 如果是当前播放的集数，添加特殊样式
+                if (`p${i}.mp4` === currentPage) {
+                    episodeButton.style.backgroundColor = '#007bff';
+                }
+                
+                episodeButton.textContent = `第${i}集`;
+                
+                episodeLink.appendChild(episodeButton);
+                episodeList.appendChild(episodeLink);
+            }
+        }
+
+        // 确保 DOM 加载完成后再执行
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', generateEpisodeList);
+        } else {
+            generateEpisodeList();
+        }
+    </script>
+</body>
+</html>

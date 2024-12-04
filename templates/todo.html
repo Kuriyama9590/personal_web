@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .todo-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background-color: #2c2c2c;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            align-items: stretch;
+            gap: 10px;
+            margin: 20px;
+            position: relative;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #fff;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .char-counter {
+            position: absolute;
+            right: 150px;
+            bottom: -20px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .char-counter.limit-near {
+            color: #ff9800;
+        }
+
+        .char-counter.limit-reached {
+            color: #f44336;
+        }
+
+        .button-add {
+            background-color: #110bc0;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            line-height: 1.5;
+            margin: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-add:hover {
+            background-color: #7c4dff;
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-complete {
+            background-color: #110bc0;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button-complete:hover {
+            background-color: #7c4dff;
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-delete {
+            background-color: #f44336;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .button-delete:hover {
+            background-color: #7c4dff;
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .todo-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 20px;
+            background-color: #3a3a3a;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .todo-item:hover {
+            background-color: #444444;
+        }
+
+        .todo-item.completed .todo-content {
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .todo-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .todo-content {
+            color: #fff;
+            flex-grow: 1;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        .page-title {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+    </style>
+</head>
+<body>
+    <div class="todo-container">
+        <h1 class="page-title">{{ title }}</h1>
+        <div class="input-group">
+            <input type="text" id="task-input" placeholder="输入任务..." required maxlength="50">
+            <span class="char-counter">限35字</span>
+            <button onclick="addTask()" class="button-add">添加任务</button>
+        </div>
+        <ul id="task-list" style="list-style: none; padding: 0;">
+            {% for todo in todos %}
+            <li data-id="{{ todo.id }}" class="todo-item {% if todo.completed %}completed{% endif %}">
+                <span class="todo-content">{{ todo.content }}</span>
+                <div class="todo-buttons">
+                    <button onclick="toggleTodo('{{ todo.id }}')" class="button-complete">{% if todo.completed %}取消完成{% else %}完成{% endif %}</button>
+                    <button onclick="deleteTodo('{{ todo.id }}')" class="button-delete">删除</button>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById('task-input');
+        const taskList = document.getElementById('task-list');
+        const charCounter = document.querySelector('.char-counter');
+        const MAX_LENGTH = 35;
+
+        // 更新字符计数
+        function updateCharCounter() {
+            const length = taskInput.value.length;
+            charCounter.textContent = `${length}/${MAX_LENGTH}`;
+            
+            if (length >= MAX_LENGTH) {
+                charCounter.classList.add('limit-reached');
+                charCounter.classList.remove('limit-near');
+            } else if (length >= MAX_LENGTH * 0.8) {
+                charCounter.classList.add('limit-near');
+                charCounter.classList.remove('limit-reached');
+            } else {
+                charCounter.classList.remove('limit-near', 'limit-reached');
+            }
+        }
+
+        // 监听输入事件
+        taskInput.addEventListener('input', updateCharCounter);
+
+        // 添加新任务
+        async function addTask() {
+            const taskText = taskInput.value.trim();
+            if (!taskText) return;
+            
+            if (taskText.length > MAX_LENGTH) {
+                alert(`任务内容不能超过${MAX_LENGTH}个字符`);
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/todos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ content: taskText })
+                });
+
+                if (response.ok) {
+                    const todo = await response.json();
+                    addTodoToList(todo);
+                    taskInput.value = '';
+                    updateCharCounter();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // 添加回车提交功能
+        taskInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addTask();
+            }
+        });
+
+        // 切换任务状态
+        async function toggleTodo(todoId) {
+            try {
+                const response = await fetch(`/api/todos/${todoId}/toggle`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    const todo = await response.json();
+                    const todoItem = document.querySelector(`li[data-id="${todo.id}"]`);
+                    if (todo.completed) {
+                        todoItem.classList.add('completed');
+                        todoItem.querySelector('.button-complete').textContent = '取消完成';
+                    } else {
+                        todoItem.classList.remove('completed');
+                        todoItem.querySelector('.button-complete').textContent = '完成';
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // 删除任务
+        async function deleteTodo(todoId) {
+            try {
+                const response = await fetch(`/api/todos?id=${todoId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    const todoItem = document.querySelector(`li[data-id="${todoId}"]`);
+                    todoItem.remove();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // 添加任务到列表
+        function addTodoToList(todo) {
+            const li = document.createElement('li');
+            li.className = 'todo-item';
+            li.dataset.id = todo.id;
+            
+            const span = document.createElement('span');
+            span.className = 'todo-content';
+            span.textContent = todo.content;
+            
+            const buttonsDiv = document.createElement('div');
+            buttonsDiv.className = 'todo-buttons';
+            
+            const toggleButton = document.createElement('button');
+            toggleButton.className = 'button-complete';
+            toggleButton.textContent = '完成';
+            toggleButton.onclick = () => toggleTodo(todo.id);
+            
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'button-delete';
+            deleteButton.textContent = '删除';
+            deleteButton.onclick = () => deleteTodo(todo.id);
+            
+            buttonsDiv.appendChild(toggleButton);
+            buttonsDiv.appendChild(deleteButton);
+            
+            li.appendChild(span);
+            li.appendChild(buttonsDiv);
+            taskList.appendChild(li);
+        }
+    </script>
+</body>
+</html>

@@ -8,7 +8,10 @@
 <body>
     <a href="{{ url_for('index')}}" class="no-underline" style="margin-top: 50px;">
         <button class="button-top">😋Home😋</button>
-    </a><br>
+    </a>
+    <a href="{{ url_for('logout') }}" class="no-underline" style="margin-top: 50px;"">
+        <button class="button-top">😢注销😒</button>
+    </a>
     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80%;">
         <h2 style="color: aliceblue; font-size: 40px; margin-bottom: 20px;">🌟登录🌟</h2>
         <form action="/login" method="post">
@@ -19,7 +22,6 @@
                 <input type="password" id="password" name="password" required" style="border-radius: 10px;width: 215px; height: 20px;">
             </label>
             <button type="submit" class="button-mid">👉🏻登录👈🏻</button>
-            <a href="{{url_for('register')}}" class="button-mid">👉🏻注册👈🏻</a>
         </form>
     </div>
         
