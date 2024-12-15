@@ -9,15 +9,15 @@
     <title>{{ title }}</title>
 </head>
 <body>
-
     <div class="title-container">
+        
         <h1 class="words" style="font-size: 60px; animation: popout-main-button 0.5s ease-out;">🥳欢迎来到Ise217的Web!🥳</h1>
         <div class="button-container">
             <a href="{{url_for('about')}}" class="button-mid" style="text-decoration: none; animation: popout-main-button 0.7s ease-out;">👉🏻关于我👈🏻</a>
             <a href="{{url_for('login')}}" class="button-mid" style="text-decoration: none; animation: popout-main-button  0.8s ease-out;">😁登录🤤</a>
+            <a href="{{ url_for('logout') }}" class="button-mid" style="margin-top: 50px;"">😢注销😒</a>
             <a href="{{url_for('todo')}}" class="button-mid" style="text-decoration: none; animation: popout-main-button  0.8s ease-out;">🛍️TODO🏪</a>
             <a href="{{url_for('video_zone')}}" class="button-mid" style="text-decoration: none; animation: popout-main-button  0.8s ease-out;">🎥视频🎥</a>
-            <a href="http://1.13.196.226:18080/login" class="button-mid" target="_parent" style="text-decoration: none; animation: popout-main-button  0.8s ease-out;" >🤓网盘🤓</a>
         </div>
     </div>
 

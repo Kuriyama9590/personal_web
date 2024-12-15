@@ -143,11 +143,64 @@
             margin-bottom: 30px;
             font-size: 28px;
         }
+
+        .stats-container {
+            background-color: #3a3a3a;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px;
+            color: #fff;
+        }
+
+        .stats-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .stats-bar {
+            height: 24px;
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            margin-top: 10px;
+        }
+
+        .stats-progress {
+            height: 100%;
+            background-color: #4a90e2;
+            transition: width 0.3s ease;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .stats-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            color: #fff;
+            font-size: 14px;
+            line-height: 24px;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
+    <a href="{{ url_for('index')}}" class="no-underline" style="margin-top: 50px;">
+        <button class="button-top">😋Home😋</button>
+    </a><br>
     <div class="todo-container">
         <h1 class="page-title">{{ title }}</h1>
+        
+        <div class="stats-container">
+            <div class="stats-title">任务完成统计</div>
+            <div class="stats-bar">
+                <div class="stats-text">完成: 0 / 总计: 0 (0%)</div>
+                <div class="stats-progress" style="width: 0%"></div>
+            </div>
+        </div>
+
         <div class="input-group">
             <input type="text" id="task-input" placeholder="输入任务..." required maxlength="50">
             <span class="char-counter">限35字</span>
@@ -170,7 +223,9 @@
         const taskInput = document.getElementById('task-input');
         const taskList = document.getElementById('task-list');
         const charCounter = document.querySelector('.char-counter');
-        const MAX_LENGTH = 35;
+        const statsProgress = document.querySelector('.stats-progress');
+        const statsText = document.querySelector('.stats-text');
+        const MAX_LENGTH = 50;
 
         // 更新字符计数
         function updateCharCounter() {
@@ -190,6 +245,30 @@
 
         // 监听输入事件
         taskInput.addEventListener('input', updateCharCounter);
+
+        // 更新统计信息
+        function updateStats() {
+            const totalTasks = document.querySelectorAll('.todo-item').length;
+            const completedTasks = document.querySelectorAll('.todo-item.completed').length;
+            const percentage = totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+            
+            statsProgress.style.width = `${percentage}%`;
+            statsText.textContent = `完成: ${completedTasks} / 总计: ${totalTasks} (${percentage}%)`;
+            
+            // 根据完成率改变进度条颜色
+            if (percentage >= 80) {
+                statsProgress.style.backgroundColor = '#4CAF50';  // 绿色
+            } else if (percentage >= 50) {
+                statsProgress.style.backgroundColor = '#4a90e2';  // 蓝色
+            } else if (percentage >= 20) {
+                statsProgress.style.backgroundColor = '#ff9800';  // 橙色
+            } else {
+                statsProgress.style.backgroundColor = '#f44336';  // 红色
+            }
+        }
+
+        // 在页面加载时更新统计
+        document.addEventListener('DOMContentLoaded', updateStats);
 
         // 添加新任务
         async function addTask() {
@@ -215,6 +294,7 @@
                     addTodoToList(todo);
                     taskInput.value = '';
                     updateCharCounter();
+                    updateStats();
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -246,6 +326,7 @@
                         todoItem.classList.remove('completed');
                         todoItem.querySelector('.button-complete').textContent = '完成';
                     }
+                    updateStats();
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -262,6 +343,7 @@
                 if (response.ok) {
                     const todoItem = document.querySelector(`li[data-id="${todoId}"]`);
                     todoItem.remove();
+                    updateStats();
                 }
             } catch (error) {
                 console.error('Error:', error);

@@ -45,7 +45,7 @@ def load_user(user_id):
 
 CORS(app)
 
-WINDOWS_PC_URL = "http://100.84.59.100:5001/videos"
+WINDOWS_PC_URL = "http://10.151.1.72:5001/videos"
 
 # 添加视频文件的存储路径配置
 VIDEO_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'videos')
@@ -75,7 +75,7 @@ def logout():
 @app.route('/')
 def index():
     login_status = session.get('login_status', False)
-    username = current_user.get_id() if login_status else '' #获取当前用户的id
+    username = current_user.username if login_status and hasattr(current_user, 'username') else ''  # 获取用户名
     title = f'{username},欢迎回来!' if login_status else '请先登录'
     return render_template('index.html', login_status=login_status, title=title)
 
@@ -115,9 +115,28 @@ def stream_video(video_name, video_page):
         
         response = requests.get(video_url, headers=headers, stream=True)
         
+        def generate():
+            buffer_size = 0
+            max_buffer_size = 1024 * 1024 * 100  # 100MB
+            for chunk in response.iter_content(chunk_size=1024 * 1024):  # 每次读取1MB
+                if not chunk:
+                    break
+                
+                buffer_size += len(chunk)
+                
+                if buffer_size >= max_buffer_size:
+                    print("CLEAR BUFFER")
+                    # 如果缓冲区达到最大值，则停止读取并清除缓存
+                    yield chunk[:max_buffer_size - (buffer_size - len(chunk))]
+                    buffer_size = len(chunk) - (max_buffer_size - (buffer_size - len(chunk)))
+                else:
+                    yield chunk
+            
+            response.close()  # 确保关闭连接
+        
         # 构建响应
         flask_response = Response(
-            response.iter_content(chunk_size=1024 * 1024),
+            generate(),
             status=response.status_code,
             content_type=response.headers.get('content-type')
         )
