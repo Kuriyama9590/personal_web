@@ -184,6 +184,82 @@
             line-height: 24px;
             z-index: 1;
         }
+
+        .behavior-stats-container {
+            background-color: #3a3a3a;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px;
+            color: #fff;
+        }
+
+        .behavior-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .behavior-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .behavior-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .behavior-bar {
+            flex-grow: 1;
+            height: 24px;
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .behavior-progress {
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .behavior-label {
+            min-width: 50px;
+        }
+
+        .behavior-value {
+            min-width: 60px;
+            text-align: right;
+        }
+
+        .behavior-work { background-color: #4CAF50; }
+        .behavior-study { background-color: #2196F3; }
+        .behavior-relax { background-color: #FF9800; }
+        .behavior-fun { background-color: #9C27B0; }
+        .behavior-unknown { background-color: #607D8B; }
+
+        .refresh-button {
+            background-color: #110bc0;
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .refresh-button:hover {
+            background-color: #7c4dff;
+            transform: translateY(1px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -198,6 +274,50 @@
             <div class="stats-bar">
                 <div class="stats-text">完成: 0 / 总计: 0 (0%)</div>
                 <div class="stats-progress" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <div class="behavior-stats-container">
+            <div class="behavior-title">
+                <span>行为分类统计</span>
+                <button onclick="updateBehaviorStats()" class="refresh-button">刷新统计</button>
+            </div>
+            <div class="behavior-chart">
+                <div class="behavior-item">
+                    <span class="behavior-label">工作</span>
+                    <div class="behavior-bar">
+                        <div class="behavior-progress behavior-work" style="width: 0%"></div>
+                    </div>
+                    <span class="behavior-value">0%</span>
+                </div>
+                <div class="behavior-item">
+                    <span class="behavior-label">学习</span>
+                    <div class="behavior-bar">
+                        <div class="behavior-progress behavior-study" style="width: 0%"></div>
+                    </div>
+                    <span class="behavior-value">0%</span>
+                </div>
+                <div class="behavior-item">
+                    <span class="behavior-label">摸鱼</span>
+                    <div class="behavior-bar">
+                        <div class="behavior-progress behavior-relax" style="width: 0%"></div>
+                    </div>
+                    <span class="behavior-value">0%</span>
+                </div>
+                <div class="behavior-item">
+                    <span class="behavior-label">整活</span>
+                    <div class="behavior-bar">
+                        <div class="behavior-progress behavior-fun" style="width: 0%"></div>
+                    </div>
+                    <span class="behavior-value">0%</span>
+                </div>
+                <div class="behavior-item">
+                    <span class="behavior-label">未知</span>
+                    <div class="behavior-bar">
+                        <div class="behavior-progress behavior-unknown" style="width: 0%"></div>
+                    </div>
+                    <span class="behavior-value">0%</span>
+                </div>
             </div>
         </div>
 
@@ -255,7 +375,7 @@
             statsProgress.style.width = `${percentage}%`;
             statsText.textContent = `完成: ${completedTasks} / 总计: ${totalTasks} (${percentage}%)`;
             
-            // 根据完成率改变进度条颜色
+            // 根据完成率改进度条颜色
             if (percentage >= 80) {
                 statsProgress.style.backgroundColor = '#4CAF50';  // 绿色
             } else if (percentage >= 50) {
@@ -295,6 +415,7 @@
                     taskInput.value = '';
                     updateCharCounter();
                     updateStats();
+                    updateBehaviorStats();
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -327,6 +448,7 @@
                         todoItem.querySelector('.button-complete').textContent = '完成';
                     }
                     updateStats();
+                    updateBehaviorStats();
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -344,6 +466,7 @@
                     const todoItem = document.querySelector(`li[data-id="${todoId}"]`);
                     todoItem.remove();
                     updateStats();
+                    updateBehaviorStats();
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -380,6 +503,50 @@
             li.appendChild(buttonsDiv);
             taskList.appendChild(li);
         }
+
+        // 更新行为统计
+        async function updateBehaviorStats() {
+            try {
+                const response = await fetch('/api/behavior-stats');
+                if (response.ok) {
+                    const stats = await response.json();
+                    console.log('收到的统计数据:', stats);  // 添加调试日志
+                    
+                    // 更新每个行为类型的进度条
+                    Object.entries(stats).forEach(([type, value]) => {
+                        console.log(`更新${type}的值为${value}`);  // 添加调试日志
+                        updateBehaviorBar(type, value);
+                    });
+                } else {
+                    console.error('获取统计数据失败:', response.status);
+                }
+            } catch (error) {
+                console.error('更新行为统计出错:', error);
+            }
+        }
+
+        function updateBehaviorBar(type, value) {
+            // 使用更精确的选择器
+            const items = document.querySelectorAll('.behavior-item');
+            for (const item of items) {
+                const label = item.querySelector('.behavior-label');
+                if (label && label.textContent === type) {
+                    const progress = item.querySelector('.behavior-progress');
+                    const valueSpan = item.querySelector('.behavior-value');
+                    if (progress && valueSpan) {
+                        progress.style.width = `${value}%`;
+                        valueSpan.textContent = `${value}%`;
+                    }
+                    break;
+                }
+            }
+        }
+
+        // 在页面加载时更新行为统计
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            updateBehaviorStats();
+        });
     </script>
 </body>
 </html>

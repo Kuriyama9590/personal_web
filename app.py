@@ -27,6 +27,7 @@ class Todo(db.Model):
     content = db.Column(db.String(200), nullable=False)
     completed = db.Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    behavior_type = db.Column(db.String(20), nullable=True)
 
 # 初始化测试用户数据
 def init_db():
@@ -50,19 +51,37 @@ WINDOWS_PC_URL = "http://10.151.1.72:5001/videos"
 # 添加视频文件的存储路径配置
 VIDEO_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'videos')
 
+def load_users_from_txt():
+    users = {}
+    with open('user.txt', 'r') as file:
+        for line in file:
+            line = line.strip()  # 去除行首尾空白字符
+            if line:    
+                try:
+                    username, password = line.split(':')  # 使用冒号分隔
+                    users[username] = password
+                except ValueError:
+                    print(f"行格式错误: {line}")  # 打印格式错误的行
+    return users
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         
-        user = User.query.filter_by(username=username).first()
-        if user and user.password == password:
+        user = load_users_from_txt()
+        if username in user and user[username] == password:
+            user = User.query.filter_by(username=username).first()
+            if not user:
+                user = User(username=username, password=password)
+                db.session.add(user)
+                db.session.commit()
             login_user(user)
             session['login_status'] = True
             return redirect(url_for('index'))
         else:
-            return 'Invalid username or password'
+            return '用户名密码无效'
     return render_template('login.html')
 
 @app.route('/logout')
@@ -169,14 +188,50 @@ def todo():
 def handle_todos():
     if request.method == 'GET':
         todos = Todo.query.filter_by(user_id=current_user.id).all()
-        return jsonify([{'id': todo.id, 'content': todo.content, 'completed': todo.completed} for todo in todos])
+        return jsonify([{
+            'id': todo.id, 
+            'content': todo.content, 
+            'completed': todo.completed,
+            'behavior_type': todo.behavior_type
+        } for todo in todos])
     
     elif request.method == 'POST':
         data = request.get_json()
-        new_todo = Todo(content=data['content'], user_id=current_user.id)
+        # 调用AI进行行为分类
+        from openai import OpenAI
+        client = OpenAI(api_key="sk-34501009c15d4f008000608f30158142", base_url="https://api.deepseek.com")
+        
+        ai_prompt = f'根据给出日程行为描述，在"工作"，"学习"，"摸鱼"，"整活"，"未知"五种行为中进行判断，找出最契合的一种。如果内容难以判断或不确定，请返回"未知"。具体日程为：{data["content"]}。注意，你的返回只能是"工作"，"学习"，"摸鱼"，"整活"，"未知"五种中的一种'
+        print(f"发送给AI的提示: {ai_prompt}")
+        
+        response = client.chat.completions.create(
+            model="deepseek-chat",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant"},
+                {"role": "user", "content": ai_prompt},
+            ],
+            stream=False
+        )
+        
+        behavior_type = response.choices[0].message.content.strip()
+        print(f"AI回复的行为类型: {behavior_type}")
+        
+        new_todo = Todo(
+            content=data['content'], 
+            user_id=current_user.id,
+            behavior_type=behavior_type
+        )
         db.session.add(new_todo)
         db.session.commit()
-        return jsonify({'id': new_todo.id, 'content': new_todo.content, 'completed': new_todo.completed})
+        
+        response_data = {
+            'id': new_todo.id, 
+            'content': new_todo.content, 
+            'completed': new_todo.completed,
+            'behavior_type': new_todo.behavior_type
+        }
+        print(f"返回给前端的数据: {response_data}")
+        return jsonify(response_data)
     
     elif request.method == 'DELETE':
         todo_id = request.args.get('id')
@@ -196,6 +251,47 @@ def toggle_todo(todo_id):
     todo.completed = not todo.completed
     db.session.commit()
     return jsonify({'id': todo.id, 'content': todo.content, 'completed': todo.completed})
+
+@app.route('/api/behavior-stats', methods=['GET'])
+@login_required
+def get_behavior_stats():
+    todos = Todo.query.filter_by(user_id=current_user.id).all()
+    print(f"获取到的所有todo数量: {len(todos)}")
+    
+    total = len(todos)
+    if total == 0:
+        print("没有todo数据")
+        return jsonify({
+            '工作': 0,
+            '学习': 0,
+            '摸鱼': 0,
+            '整活': 0,
+            '未知': 0
+        })
+    
+    stats = {
+        '工作': 0,
+        '学习': 0,
+        '摸鱼': 0,
+        '整活': 0,
+        '未知': 0
+    }
+    
+    print("各todo的行为类型:")
+    for todo in todos:
+        print(f"- 内容: {todo.content}, 行为类型: {todo.behavior_type}")
+        if todo.behavior_type in stats:
+            stats[todo.behavior_type] += 1
+        else:
+            stats['未知'] += 1  # 如果行为类型不在预定义类型中，归类为"未知"
+    
+    # 计算百分比
+    print("计算前的统计:", stats)
+    for key in stats:
+        stats[key] = round((stats[key] / total) * 100, 1)
+    
+    print("返回的统计数据:", stats)
+    return jsonify(stats)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
