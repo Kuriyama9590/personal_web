@@ -3,6 +3,7 @@ from flask_login import LoginManager, UserMixin, login_user, logout_user, login_
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask import session
+from zhipuai import ZhipuAI
 import requests
 import os
 
@@ -46,7 +47,7 @@ def load_user(user_id):
 
 CORS(app)
 
-WINDOWS_PC_URL = "http://10.151.1.72:5001/videos"
+WINDOWS_PC_URL = "http://100.84.59.100:5001/videos"
 
 # 添加视频文件的存储路径配置
 VIDEO_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'videos')
@@ -70,18 +71,30 @@ def login():
         username = request.form['username']
         password = request.form['password']
         
-        user = load_users_from_txt()
-        if username in user and user[username] == password:
+        # 从 user.txt 文件中读取用户信息
+        users = {}
+        try:
+            with open('user.txt', 'r', encoding='utf-8') as file:
+                for line in file:
+                    line = line.strip()  # 去除行首尾空白字符
+                    if line:
+                        try:
+                            user, pwd = line.split(':')  # 使用冒号分隔
+                            users[user] = pwd
+                        except ValueError:
+                            print(f"行格式错误: {line}")  # 打印格式错误的行
+        except FileNotFoundError:
+            return '用户文件未找到', 404
+
+        if username in users and users[username] == password:
             user = User.query.filter_by(username=username).first()
-            if not user:
-                user = User(username=username, password=password)
-                db.session.add(user)
-                db.session.commit()
+            # 登录用户
             login_user(user)
             session['login_status'] = True
             return redirect(url_for('index'))
         else:
-            return '用户名密码无效'
+            return '用户名或密码无效', 401
+
     return render_template('login.html')
 
 @app.route('/logout')
@@ -197,15 +210,14 @@ def handle_todos():
     
     elif request.method == 'POST':
         data = request.get_json()
-        # 调用AI进行行为分类
-        from openai import OpenAI
-        client = OpenAI(api_key="sk-34501009c15d4f008000608f30158142", base_url="https://api.deepseek.com")
+        # 调用ZhipuAI进行行为分类
+        zhipu_client = ZhipuAI(api_key="e611630ce32f95a9a9f873206f1d7e05.1zbusyjskjP0z01D")  # 替换为实际的API密钥
         
         ai_prompt = f'根据给出日程行为描述，在"工作"，"学习"，"摸鱼"，"整活"，"未知"五种行为中进行判断，找出最契合的一种。如果内容难以判断或不确定，请返回"未知"。具体日程为：{data["content"]}。注意，你的返回只能是"工作"，"学习"，"摸鱼"，"整活"，"未知"五种中的一种'
         print(f"发送给AI的提示: {ai_prompt}")
         
-        response = client.chat.completions.create(
-            model="deepseek-chat",
+        response = zhipu_client.chat.completions.create(
+            model="glm-4-flash",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant"},
                 {"role": "user", "content": ai_prompt},
